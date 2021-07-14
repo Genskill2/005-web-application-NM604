@@ -72,8 +72,8 @@ def pet_info(pid):
     name, bought, sold, description, species = pet
     data = dict(id = pid,
                 name = name,
-                bought = format_date(bought),
-                sold = format_date(sold),
+                bought = (bought),
+                sold = (sold),
                 description = description, #Is displaying now
                 species = species,
                 tags = tags)
@@ -91,8 +91,8 @@ def edit(pid):
         name, bought, sold, description, species = pet
         data = dict(id = pid,
                     name = name,
-                    bought = format_date(bought),
-                    sold = format_date(sold),
+                    bought = bought,
+                    sold = sold,
                     description = description,
                     species = species,
                     tags = tags)
