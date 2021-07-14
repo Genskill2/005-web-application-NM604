@@ -12,8 +12,9 @@ def format_date(d):
   if d==None or d=='':
     return None
   else:
-    d = datetime.datetime.strptime(d, "%Y-%m-%d")
-    v = d.strftime("%a - %b %d, %Y")
+    dt = str(d)
+    dt = datetime.datetime.strptime(dt, "%Y-%m-%d")
+    v = dt.strftime("%a - %b %d, %Y")
     return v
 
 @bp.route("/search/<field>/<value>")
