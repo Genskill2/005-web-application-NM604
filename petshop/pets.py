@@ -9,7 +9,7 @@ from . import db
 bp = Blueprint("pets", "pets", url_prefix="")
 
 def format_date(d):
-  if d==None:
+  if d==None or d=='':
     return None
   else:
     d = datetime.datetime.strptime(d, "%Y-%m-%d")
