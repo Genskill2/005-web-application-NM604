@@ -91,9 +91,9 @@ def edit(pid):
         name, bought, sold, description, species = pet
         data = dict(id = pid,
                     name = name,
-                    bought = bought,
+                    bought = format_date(bought),
                     sold = format_date(sold),
-                    description = format_date(description),
+                    description = description,
                     species = species,
                     tags = tags)
         return render_template("editpet.html", **data)
