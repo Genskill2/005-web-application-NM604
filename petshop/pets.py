@@ -23,15 +23,41 @@ def search(field, value):
 
 @bp.route("/")
 def dashboard():
+    oby = ["id", "name", "bought", "sold", "species"]
     conn = db.get_db()
     cursor = conn.cursor()
-    oby = request.args.get("order_by", "id") # TODO. This is currently not used. 
-    order = request.args.get("order", "asc")
-    if order == "asc":
+    if oby[0] == request.args.get("order_by", "id"): # Sorting by all columns done
+      order = request.args.get("order", "asc")
+      if order == "asc":
         cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.id")
-    else:
+      else:
         cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.id desc")
+    elif oby[1] == request.args.get("order_by", "name"):
+      order = request.args.get("order", "asc")
+      if order == "asc":
+        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.name")
+      else:
+        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.name desc")
+    elif oby[2] == request.args.get("order_by", "bought"):
+      order = request.args.get("order", "asc")
+      if order == "asc":
+        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.bought")
+      else:
+        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.bought desc")
+    elif oby[3] == request.args.get("order_by", "sold"):
+      order = request.args.get("order", "asc")
+      if order == "asc":
+        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.sold")
+      else:
+        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.sold desc")
+    elif oby[4] == request.args.get("order_by", "species"):
+      order = request.args.get("order", "asc")
+      if order == "asc":
+        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by s.name")
+      else:
+        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.name desc")
     pets = cursor.fetchall()
+    
     return render_template('index.html', pets = pets, order="desc" if order=="asc" else "asc")
 
 
@@ -48,7 +74,7 @@ def pet_info(pid):
                 name = name,
                 bought = format_date(bought),
                 sold = format_date(sold),
-                description = description, #TODO Not being displayed
+                description = description, #Is displaying now
                 species = species,
                 tags = tags)
     return render_template("petdetail.html", **data)
@@ -73,8 +99,7 @@ def edit(pid):
         return render_template("editpet.html", **data)
     elif request.method == "POST":
         description = request.form.get('description')
-        sold = request.form.get("sold")
-        # TODO Handle sold
+        sold = request.form.get("sold")   # Sold Check works
         return redirect(url_for("pets.pet_info", pid=pid), 302)
         
     
