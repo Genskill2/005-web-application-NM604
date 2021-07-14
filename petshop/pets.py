@@ -55,7 +55,7 @@ def dashboard():
       if order == "asc":
         cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by s.name")
       else:
-        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by p.name desc")
+        cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s where p.species = s.id order by s.name desc")
     pets = cursor.fetchall()
     
     return render_template('index.html', pets = pets, order="desc" if order=="asc" else "asc")
@@ -99,7 +99,11 @@ def edit(pid):
         return render_template("editpet.html", **data)
     elif request.method == "POST":
         description = request.form.get('description')
-        sold = request.form.get("sold")   # Sold Check works
+        sold = request.form.get('sold')
+        cursor.execute("""
+        update pet
+        set description = ?, sold = ?;""", [description], [sold])
+        conn.commit()
         return redirect(url_for("pets.pet_info", pid=pid), 302)
         
     
