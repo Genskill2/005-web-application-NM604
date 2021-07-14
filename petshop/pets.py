@@ -73,7 +73,7 @@ def pet_info(pid):
     data = dict(id = pid,
                 name = name,
                 bought = format_date(bought),
-                sold = format_date(sold),
+                sold = sold,
                 description = description, #Is displaying now
                 species = species,
                 tags = tags)
