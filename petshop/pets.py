@@ -92,7 +92,7 @@ def edit(pid):
         data = dict(id = pid,
                     name = name,
                     bought = format_date(bought),
-                    sold = format_date(sold),
+                    sold = sold,
                     description = description,
                     species = species,
                     tags = tags)
