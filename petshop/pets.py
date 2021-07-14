@@ -102,7 +102,12 @@ def edit(pid):
         sold = request.form.get('sold')
         cursor.execute("""
         update pet
-        set description = ?;""", [description])
+        set description = ?
+        where id = ?;""", (description, pid))
+        cursor.execute("""
+        update pet
+        set sold = ?
+        where id = ?;""", (sold, pid))
         conn.commit()
         return redirect(url_for("pets.pet_info", pid=pid), 302)
         
