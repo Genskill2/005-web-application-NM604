@@ -9,9 +9,12 @@ from . import db
 bp = Blueprint("pets", "pets", url_prefix="")
 
 def format_date(d):
-  d = datetime.datetime.strptime(d, "%Y-%m-%d")
-  v = d.strftime("%a - %b %d, %Y")
-  return v
+  if d==None:
+    return None
+  else:
+    d = datetime.datetime.strptime(d, "%Y-%m-%d")
+    v = d.strftime("%a - %b %d, %Y")
+    return v
 
 @bp.route("/search/<field>/<value>")
 def search(field, value):
