@@ -70,6 +70,8 @@ def pet_info(pid):
     cursor.execute("select t.name from tags_pets tp, tag t where tp.pet = ? and tp.tag = t.id", [pid])
     tags = (x[0] for x in cursor.fetchall())
     name, bought, sold, description, species = pet
+    if sold==1:
+      sold = datetime.datetime.now().strftime("%Y-%m-%d")
     data = dict(id = pid,
                 name = name,
                 bought = format_date(bought),
