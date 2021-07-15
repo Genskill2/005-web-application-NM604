@@ -105,8 +105,7 @@ def edit(pid):
         set description = ?
         where id = ?;""", (description, pid))
         if sold==1:
-          sold = datetime.datetime.now
-          sold = format_date(sold) 
+          sold = datetime.datetime.now().strftime("%Y-%m-%d")
           cursor.execute("""
           update pet
           set sold = ?
