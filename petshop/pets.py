@@ -18,8 +18,11 @@ def format_date(d):
 
 @bp.route("/search/<field>/<value>")
 def search(field, value):
-    # TBD
-    return ""
+    conn = db.get_db()
+    cursor = conn.cursor()
+    cursor.execute("""select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s, tags_pets tp, tag t  where t.name = ? and tp.tag = t.id and p.species = s.id and tp.pet = p.id order by p.id""", [value])
+    pets = cursor.fetchall()
+    return render_template("search.html", pets=pets)
 
 @bp.route("/")
 def dashboard():
@@ -80,14 +83,6 @@ def pet_info(pid):
                 species = species,
                 tags = tags)
     return render_template("petdetail.html", **data)
-    
-@bp.route("/search/tag/<t>")
-def searching(t):
-  conn = db.get_db()
-  cursor = conn.cursor()
-  cursor.execute("""select distinct p.id, p.name, p.bought, p.sold, s.name from pet p, animal s, tags_pets tp, tag t  where t.name = ? and tp.tag = t.id and p.species = s.id order by p.id""", [t])
-  pets = cursor.fetchall()
-  return render_template("search.html", pets=pets)
 
 @bp.route("/<pid>/edit", methods=["GET", "POST"])
 def edit(pid):
