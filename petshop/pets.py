@@ -105,11 +105,12 @@ def edit(pid):
         set description = ?
         where id = ?;""", (description, pid))
         if sold==1:
-          sold = today.strftime("%Y-%m-%d")
+          sold = datetime.now()
+          dt = sold.strftime("%Y-%m-%d")
         cursor.execute("""
         update pet
         set sold = ?
-        where id = ?;""", (format_date(sold), pid))
+        where id = ?;""", (dt, pid))
         conn.commit()
         return redirect(url_for("pets.pet_info", pid=pid), 302)
         
